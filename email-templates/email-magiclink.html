@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- Supabase "Magic link" sign-in email. Same email-safe system as email-confirmation.html.
+     Keep {{ .ConfirmationURL }} verbatim. Replace __BRAND_*__ / __TAGLINE_*__ / fundiva.support@erezults.com / https://fundiva.erezults.com. -->
+<html lang="he" dir="rtl" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark">
+<title>Your sign-in link</title>
+<!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->
+<style>
+  body{margin:0;padding:0;width:100%!important;-webkit-text-size-adjust:100%}
+  table{border-collapse:collapse!important}a{text-decoration:none}
+  @media only screen and (max-width:620px){.hc-w{width:100%!important}.hc-p{padding-left:24px!important;padding-right:24px!important}}
+  @media (prefers-color-scheme:dark){.hc-page{background:#0E0B1C!important}.hc-card{background:#1A1730!important}.hc-ink{color:#F4F2FB!important}.hc-mut{color:#B5A4FF!important}}
+</style></head>
+<body class="hc-page" style="margin:0;padding:0;background:#F4F2FB">
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;color:#F4F2FB">קישור כניסה ל-Fundiva · Your Fundiva sign-in link</div>
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" class="hc-page" style="background:#F4F2FB">
+<tr><td align="center" style="padding:24px 12px">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" class="hc-w" style="width:600px;max-width:600px;margin:0 auto">
+    <tr><td bgcolor="#2062ca" style="background-color:#2062ca;background-image:linear-gradient(135deg,#2062ca 0%,#2fa891 100%);border-radius:18px 18px 0 0;padding:30px 32px">
+      <table role="presentation" width="100%" dir="ltr"><tr>
+        <td width="48" valign="middle" style="width:48px">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="width:44px;height:44px"><tr>
+            <td bgcolor="#17498f" align="center" valign="middle" style="width:44px;height:44px;background-color:#17498f;border-radius:50%;line-height:44px;mso-line-height-rule:exactly">
+              <div style="width:18px;height:18px;border:3px solid #fff;border-radius:50%;display:inline-block;font-size:0;line-height:0">&nbsp;</div>
+            </td></tr></table>
+        </td>
+        <td valign="middle" style="padding-left:12px"><span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:19px;font-weight:700;color:#fff;line-height:44px">Fundiva</span></td>
+      </tr></table>
+      <div style="padding-top:14px"><span dir="rtl" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:13px;color:#F3EEFF">ניהול ומעקב קרנות השתלמות, גמל ופנסיה&nbsp;&nbsp;·&nbsp;&nbsp;Track your savings funds with your group</span></div>
+    </td></tr>
+    <tr><td class="hc-card" bgcolor="#FFFFFF" style="background:#fff;border-radius:0 0 18px 18px">
+      <table role="presentation" width="100%"><tr><td class="hc-p" dir="rtl" align="right" style="padding:34px 32px 8px">
+        <h1 class="hc-ink" style="margin:0 0 10px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:24px;color:#1A1730">כניסה ל-Fundiva</h1>
+        <p class="hc-ink" style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:15px;line-height:1.6;color:#1A1730">לחיצה על הכפתור תחבר אותך. הקישור חד-פעמי ופג בקרוב. אם לא ביקשת זאת, אפשר להתעלם.</p>
+      </td></tr><tr><td class="hc-p" dir="ltr" align="left" style="padding:8px 32px 8px">
+        <h1 class="hc-ink" style="margin:0 0 10px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:24px;color:#1A1730">Sign in to Fundiva</h1>
+        <p class="hc-ink" style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:15px;line-height:1.6;color:#1A1730">Tap the button to sign in. This link is single-use and expires soon. If you didn't request it, ignore this email.</p>
+      </td></tr>
+      <tr><td align="center" style="padding:26px 32px 8px">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td bgcolor="#2062ca" style="background-color:#2062ca;background-image:linear-gradient(135deg,#2062ca 0%,#2fa891 100%);border-radius:12px">
+            <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:14px 30px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:16px;font-weight:700;color:#ffffff;text-decoration:none;border-radius:12px">כניסה · Sign in</a>
+          </td></tr></table>
+      </td></tr>
+      <tr><td class="hc-p" style="padding:14px 32px 30px">
+        <p class="hc-mut" dir="rtl" style="margin:0 0 4px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:12px;color:#6B7280">אם הכפתור לא עובד, העתיקו את הקישור:</p>
+        <p class="hc-mut" dir="ltr" style="margin:0 0 6px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:12px;color:#6B7280">If the button doesn't work, copy this link:</p>
+        <p style="margin:0;word-break:break-all;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;font-size:12px;color:#2062ca">{{ .ConfirmationURL }}</p>
+      </td></tr>
+    </table></td></tr>
+    <tr><td class="hc-p" style="padding:22px 32px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif">
+      <p class="hc-mut" dir="rtl" style="margin:0 0 4px;font-size:12px;color:#8E86B5">קיבלת מייל זה כי התבקש קישור כניסה ל-Fundiva עבור כתובת זו.</p>
+      <p class="hc-mut" dir="ltr" style="margin:0 0 8px;font-size:12px;color:#8E86B5">You received this because a sign-in link was requested for a Fundiva account with this address.</p>
+      <p style="margin:0;font-size:12px;color:#8E86B5">Need help? <a href="mailto:fundiva.support@erezults.com" style="color:#2062ca">fundiva.support@erezults.com</a> &nbsp;·&nbsp; <a href="https://fundiva.erezults.com" style="color:#2062ca">Fundiva</a></p>
+    </td></tr>
+  </table>
+</td></tr></table>
+</body></html>
