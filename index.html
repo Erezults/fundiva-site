@@ -112,21 +112,37 @@
     opacity:0;
     animation:reveal .8s ease .4s forwards;
   }
-  .badge-soon{
+  .hero-icon{
+    display:block;
+    width:104px;
+    height:104px;
+    border-radius:22%;
+    margin:0 auto 28px;
+    box-shadow:0 18px 40px -14px rgba(15,23,42,.55), 0 4px 16px rgba(0,0,0,.28);
+    opacity:0;
+    animation:reveal .7s ease 0s forwards;
+  }
+  .btn-appstore{
     display:inline-flex;
     align-items:center;
     gap:12px;
-    padding:14px 28px;
+    padding:14px 30px;
     border-radius:16px;
-    border:1px solid var(--card-border-hi);
-    background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-    box-shadow:0 12px 32px -12px rgba(91,157,249,.35);
+    border:1px solid rgba(47,168,145,.5);
+    background:linear-gradient(135deg,var(--emerald),var(--accent2));
+    box-shadow:0 16px 36px -14px rgba(5,150,105,.55);
     font-size:16px;
-    font-weight:600;
-    color:var(--text);
+    font-weight:700;
+    color:#fff;
+    text-decoration:none;
+    transition:transform .2s ease, box-shadow .2s ease;
   }
-  .badge-soon .apple{font-size:22px;line-height:1}
-  .badge-soon small{display:block;font-weight:400;color:var(--muted);font-size:12px;margin-top:2px}
+  .btn-appstore:hover{
+    transform:translateY(-2px);
+    box-shadow:0 20px 44px -14px rgba(5,150,105,.65);
+  }
+  .btn-appstore .apple{font-size:22px;line-height:1}
+  .btn-appstore small{display:block;font-weight:400;color:rgba(255,255,255,.85);font-size:12px;margin-top:2px}
 
   @keyframes reveal{
     from{opacity:0; transform:translateY(14px)}
@@ -309,12 +325,13 @@
 
 <div class="hero">
   <div class="wrap">
-    <span class="eyebrow"><span class="dot"></span>עכשיו בפיתוח פעיל</span>
+    <img src="icon.png" alt="Fundiva" class="hero-icon">
+    <span class="eyebrow"><span class="dot"></span>האפליקציה זמינה עכשיו</span>
     <h1 class="word">Fundiva</h1>
     <p class="tagline">ניהול ומעקב קרנות השתלמות, גמל ופנסיה — ביחד</p>
     <p class="subhead">אפליקציה אחת לכל קרנות המשפחה: סורקים דוח, ה-AI מחלץ את הנתונים, ורואים תמונה מלאה — לבד או עם השותפים לחיים.</p>
     <div class="cta-row">
-      <span class="badge-soon"><span class="apple">🍎</span><span>בקרוב ב-App Store<small>Coming soon on the App Store</small></span></span>
+      <a href="https://apps.apple.com/app/id6786450072" class="btn-appstore" target="_blank" rel="noopener"><span class="apple">🍎</span><span>הורידו ב-App Store<small>Download on the App Store</small></span></a>
     </div>
   </div>
 </div>
@@ -406,7 +423,7 @@
       <a href="/terms">תנאי שימוש</a>
     </div>
   </div>
-  <div class="footer-en">Fundiva — track your funds, together. iOS app coming soon.</div>
+  <div class="footer-en">Fundiva — track your funds, together. Available now on the App Store.</div>
 </footer>
 
 </body>
