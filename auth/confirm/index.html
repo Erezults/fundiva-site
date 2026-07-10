@@ -5,22 +5,25 @@
   https://fundiva.erezults.com/auth/confirm/ — this exact URL (trailing slash)
   is AUTH_CONFIRM_URL in the app's .env and in Supabase's uri_allow_list.
 
-  Bilingual (he/en) with a manual flag toggle — defaults to ENGLISH, remembers the
-  user's choice. SUPABASE URL + ANON KEY are PUBLIC (already in the app bundle).
+  STACKED-BILINGUAL (owner decision 2026-07-11): every element shows BOTH
+  English (primary) and Hebrew, simultaneously — same pattern as the four email
+  templates. No language toggle, no browser-language sniffing: every audience
+  reads every screen with zero interaction.
 
   Flow:
     • signup / email-change / magic link → relay tokens into the app via
-      <scheme>://auth/confirm#access_token=… (scheme carried in ?scheme= so dev
-      links open the dev app, prod the prod app).
-    • recovery → set the new password RIGHT HERE (works without the app), then
-      "Open Fundiva" deep-links via the scheme.
+      <scheme>://auth/confirm#access_token=… (dev/prod carried in the PATH —
+      this same file is hosted at /auth/confirm/ and /auth/confirm/dev/).
+    • recovery → set the new password RIGHT HERE (works without the app).
     • error / expired → explain + deep-link into the app to request a new email.
+
+  SUPABASE URL + ANON KEY are PUBLIC (already shipped in the app bundle).
 -->
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fundiva — Email verification / אימות אימייל</title>
+  <title>Fundiva — Email verification · אימות אימייל</title>
   <meta name="robots" content="noindex" />
   <meta name="theme-color" content="#0c0e1a" />
   <link rel="icon" href="/icon.png" />
@@ -39,9 +42,9 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { min-height: 100dvh; display: grid; place-items: center;
-      font-family: 'Heebo', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Inter', 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
       background: radial-gradient(120% 120% at 80% -10%, #16244a 0%, var(--ink) 60%); color: var(--text-on-dark); }
-    .auth-card { max-width: 480px; margin-inline: auto; text-align: center; padding: 40px 26px 48px; }
+    .auth-card { max-width: 500px; margin-inline: auto; text-align: center; padding: 40px 26px 48px; }
     .auth-card .mark { height: 64px; width: 64px; border-radius: 16px; margin: 0 auto 26px;
       filter: drop-shadow(0 8px 30px rgba(0,0,0,.4)); }
     .badge-ic { width: 88px; height: 88px; border-radius: 50%; margin: 0 auto 24px; display: grid; place-items: center;
@@ -51,76 +54,86 @@
     .badge-ic svg { width: 48px; height: 48px; color: #3ddc84; }
     .badge-ic.err svg { color: #ff5d8f; }
     .badge-ic.key svg { color: #a78bfa; }
-    .auth-card h1 { font-size: clamp(1.7rem, 5vw, 2.3rem); margin-bottom: 12px; color: #fff; font-weight: 800; }
-    .auth-card p { color: var(--text-on-dark-muted); font-size: 1.08rem; margin-bottom: 30px; line-height: 1.55; }
+    h1 { font-size: clamp(1.55rem, 5vw, 2.05rem); color: #fff; font-weight: 800; }
+    .h-he { font-family: 'Heebo', sans-serif; font-size: clamp(1.2rem, 4vw, 1.55rem); color: rgba(255,255,255,.92);
+      font-weight: 700; margin: 6px 0 14px; }
+    .sub-en { color: var(--text-on-dark-muted); font-size: 1.04rem; line-height: 1.5; }
+    .sub-he { font-family: 'Heebo', sans-serif; color: var(--text-on-dark-muted); font-size: 1.0rem; line-height: 1.5;
+      margin: 4px 0 28px; }
     .auth-actions { display: flex; flex-direction: column; gap: 14px; align-items: center; }
-    .btn { display: inline-block; min-width: 240px; padding: 15px 28px; font-size: 1.05rem; font-weight: 700;
+    .btn { display: inline-block; min-width: 260px; padding: 13px 28px; font-size: 1.02rem; font-weight: 700;
       font-family: inherit; border-radius: 999px; border: none; cursor: pointer; text-decoration: none;
-      color: #fff; background: linear-gradient(120deg, var(--brand) 0%, var(--brand-deep) 100%); }
+      color: #fff; background: linear-gradient(120deg, var(--brand) 0%, var(--brand-deep) 100%); line-height: 1.35; }
+    .btn .he-line { display: block; font-family: 'Heebo', sans-serif; font-weight: 600; font-size: .92rem;
+      color: rgba(255,255,255,.88); }
     .btn[disabled] { opacity: .6; pointer-events: none; }
-    .store-link { color: var(--text-on-dark-muted); font-size: .95rem; text-decoration: underline; }
-    .lang-switch { position: fixed; top: 16px; inset-inline-end: 16px; }
-    .lang-switch button { background: rgba(255,255,255,.1); border: 1px solid var(--border-dark); color: #fff;
-      border-radius: 999px; padding: 7px 14px; font-weight: 700; font-size: .85rem; font-family: inherit; cursor: pointer; }
-    .hint { font-size: .9rem; color: var(--text-on-dark-muted); margin-top: 8px; }
-    .pw-form { display: flex; flex-direction: column; gap: 14px; max-width: 340px; margin: 0 auto; }
-    .pw-form input { width: 100%; padding: 14px 16px; font-size: 1.05rem; border-radius: 14px;
+    .store-link { color: var(--text-on-dark-muted); font-size: .92rem; text-decoration: underline; line-height: 1.5; }
+    .hint { font-size: .88rem; color: var(--text-on-dark-muted); margin-top: 8px; line-height: 1.5; }
+    .pw-form { display: flex; flex-direction: column; gap: 14px; max-width: 360px; margin: 0 auto; }
+    .pw-form input { width: 100%; padding: 14px 16px; font-size: 1.0rem; border-radius: 14px;
       border: 1px solid var(--border-dark); background: rgba(255,255,255,.06); color: #fff; outline: none;
-      font-family: inherit; }
+      font-family: inherit; text-align: center; }
     .pw-form input:focus { border-color: #a78bfa; background: rgba(255,255,255,.1); }
     .pw-form input::placeholder { color: rgba(255,255,255,.45); }
-    .pw-err { color: #ff5d8f; font-size: .92rem; min-height: 1.1em; margin: 0; }
+    .pw-err { color: #ff5d8f; font-size: .92rem; min-height: 1.1em; margin: 0; line-height: 1.4; }
   </style>
 </head>
 <body>
-  <div class="lang-switch"><button id="langBtn" type="button">🇮🇱 עברית</button></div>
   <main class="auth-card">
     <img class="mark" src="/icon.png" alt="Fundiva" />
 
     <!-- ✅ Email verified (signup / email-change / magic link) — relaying into the app -->
     <div id="state-ok" style="display:none">
       <div class="badge-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></div>
-      <h1 data-i18n="ok_title">Your email is verified! 🎉</h1>
-      <p data-i18n="ok_sub">Opening Fundiva… if the app didn't open, tap the button.</p>
+      <h1>Your email is verified! 🎉</h1>
+      <div class="h-he" lang="he" dir="rtl">האימייל שלך אומת! 🎉</div>
+      <p class="sub-en">Opening Fundiva… if the app didn't open, tap the button below.</p>
+      <p class="sub-he" lang="he" dir="rtl">פותחים את Fundiva… אם האפליקציה לא נפתחה, לחצו על הכפתור.</p>
       <div class="auth-actions">
-        <a class="btn openApp" href="fundiva://" data-i18n="open_app">Open Fundiva</a>
-        <a class="store-link" href="https://apps.apple.com/app/id6786450072" target="_blank" rel="noopener" data-i18n="store">Don't have the app? Get it on the App Store</a>
-        <p class="hint" data-i18n="hint">Didn't open? Make sure Fundiva is installed, open it and sign in.</p>
+        <a class="btn openApp" href="fundiva://">Open Fundiva<span class="he-line" lang="he" dir="rtl">פתחו את Fundiva</span></a>
+        <a class="store-link" href="https://apps.apple.com/app/id6786450072" target="_blank" rel="noopener">Don't have the app? Get it on the App Store<br /><span lang="he" dir="rtl">אין לכם את האפליקציה? הורידו מה-App Store</span></a>
+        <p class="hint">Didn't open? Make sure Fundiva is installed, open it and sign in.<br /><span lang="he" dir="rtl">לא נפתח? ודאו ש-Fundiva מותקנת, פתחו אותה והתחברו.</span></p>
       </div>
     </div>
 
     <!-- 🔑 Recovery: choose a new password right here (works even without the app) -->
     <div id="state-recovery" style="display:none">
       <div class="badge-ic key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 2l-2 2m-7.6 7.6a5 5 0 1 0-1.4 1.4l2.4 2.4-1.5 1.5 2 2 1.5-1.5 2.1 2.1 2-2-2.1-2.1 2.5-2.5-2-2-2.5 2.5z"/><circle cx="7.5" cy="15.5" r="1.5" fill="currentColor" stroke="none"/></svg></div>
-      <h1 data-i18n="rc_title">Set a new password</h1>
-      <p data-i18n="rc_sub">Enter a new password for your Fundiva account.</p>
+      <h1>Set a new password</h1>
+      <div class="h-he" lang="he" dir="rtl">בחרו סיסמה חדשה</div>
+      <p class="sub-en">Enter a new password for your Fundiva account.</p>
+      <p class="sub-he" lang="he" dir="rtl">הזינו סיסמה חדשה לחשבון Fundiva שלכם.</p>
       <form class="pw-form" id="pwForm" autocomplete="on">
-        <input id="pw" type="password" autocomplete="new-password" data-ph="pw_ph" placeholder="New password" />
-        <input id="pw2" type="password" autocomplete="new-password" data-ph="pw2_ph" placeholder="Confirm password" />
+        <input id="pw" type="password" autocomplete="new-password" placeholder="New password · סיסמה חדשה" />
+        <input id="pw2" type="password" autocomplete="new-password" placeholder="Confirm password · אימות סיסמה" />
         <p class="pw-err" id="pwErr"></p>
-        <button class="btn" id="pwSubmit" type="submit" data-i18n="rc_submit">Update password</button>
+        <button class="btn" id="pwSubmit" type="submit">Update password<span class="he-line" lang="he" dir="rtl">עדכון סיסמה</span></button>
       </form>
     </div>
 
     <!-- ✅ Password updated -->
     <div id="state-recovery-done" style="display:none">
       <div class="badge-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></div>
-      <h1 data-i18n="rd_title">Password updated! 🎉</h1>
-      <p data-i18n="rd_sub">Open Fundiva and sign in with your new password.</p>
+      <h1>Password updated! 🎉</h1>
+      <div class="h-he" lang="he" dir="rtl">הסיסמה עודכנה! 🎉</div>
+      <p class="sub-en">Open Fundiva and sign in with your new password.</p>
+      <p class="sub-he" lang="he" dir="rtl">פתחו את Fundiva והתחברו עם הסיסמה החדשה.</p>
       <div class="auth-actions">
-        <a class="btn openApp" href="fundiva://" data-i18n="open_app">Open Fundiva</a>
-        <a class="store-link" href="https://apps.apple.com/app/id6786450072" target="_blank" rel="noopener" data-i18n="store">Don't have the app? Get it on the App Store</a>
+        <a class="btn openApp" href="fundiva://">Open Fundiva<span class="he-line" lang="he" dir="rtl">פתחו את Fundiva</span></a>
+        <a class="store-link" href="https://apps.apple.com/app/id6786450072" target="_blank" rel="noopener">Don't have the app? Get it on the App Store<br /><span lang="he" dir="rtl">אין לכם את האפליקציה? הורידו מה-App Store</span></a>
       </div>
     </div>
 
     <!-- ⚠️ Link expired / invalid -->
     <div id="state-err" style="display:none">
       <div class="badge-ic err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
-      <h1 data-i18n="err_title">This link has expired or is invalid</h1>
-      <p data-i18n="err_sub">The verification link expired or was already used. Open Fundiva and request a new email.</p>
+      <h1>This link has expired or is invalid</h1>
+      <div class="h-he" lang="he" dir="rtl">הקישור פג או אינו תקין</div>
+      <p class="sub-en">The verification link expired or was already used. Open Fundiva and request a new email.</p>
+      <p class="sub-he" lang="he" dir="rtl">קישור האימות פג תוקף או כבר נוצל. פתחו את Fundiva ובקשו אימייל חדש.</p>
       <div class="auth-actions">
-        <a class="btn openApp" href="fundiva://" data-i18n="open_app">Open Fundiva</a>
-        <a class="store-link" href="https://apps.apple.com/app/id6786450072" target="_blank" rel="noopener" data-i18n="store">Don't have the app? Get it on the App Store</a>
+        <a class="btn openApp" href="fundiva://">Open Fundiva<span class="he-line" lang="he" dir="rtl">פתחו את Fundiva</span></a>
+        <a class="store-link" href="https://apps.apple.com/app/id6786450072" target="_blank" rel="noopener">Don't have the app? Get it on the App Store<br /><span lang="he" dir="rtl">אין לכם את האפליקציה? הורידו מה-App Store</span></a>
       </div>
     </div>
   </main>
@@ -133,37 +146,12 @@
     var AUTH_BASE = SUPABASE_URL + '/auth/v1';
     var MIN_PW = 6;
 
-    var STR = {
-      he: {
-        ok_title: 'האימייל שלך אומת! 🎉',
-        ok_sub: 'פותחים את Fundiva… אם האפליקציה לא נפתחה, לחצו על הכפתור.',
-        rc_title: 'בחרו סיסמה חדשה', rc_sub: 'הזינו סיסמה חדשה לחשבון Fundiva שלכם.',
-        rc_submit: 'עדכון סיסמה', pw_ph: 'סיסמה חדשה', pw2_ph: 'אימות סיסמה',
-        rd_title: 'הסיסמה עודכנה! 🎉', rd_sub: 'פתחו את Fundiva והתחברו עם הסיסמה החדשה.',
-        open_app: 'פתחו את Fundiva',
-        store: 'אין לכם את האפליקציה? הורידו מה-App Store',
-        hint: 'לא נפתח? ודאו ש-Fundiva מותקנת, פתחו אותה והתחברו.',
-        err_title: 'הקישור פג או אינו תקין',
-        err_sub: 'קישור האימות פג תוקף או כבר נוצל. פתחו את Fundiva ובקשו אימייל חדש.',
-        e_short: 'הסיסמה חייבת לפחות ' + MIN_PW + ' תווים',
-        e_match: 'הסיסמאות אינן תואמות', e_busy: 'מעדכן…', e_fail: 'העדכון נכשל. בקשו קישור איפוס חדש.',
-        lang: '🇺🇸 English'
-      },
-      en: {
-        ok_title: 'Your email is verified! 🎉',
-        ok_sub: "Opening Fundiva… if the app didn't open, tap the button.",
-        rc_title: 'Set a new password', rc_sub: 'Enter a new password for your Fundiva account.',
-        rc_submit: 'Update password', pw_ph: 'New password', pw2_ph: 'Confirm password',
-        rd_title: 'Password updated! 🎉', rd_sub: 'Open Fundiva and sign in with your new password.',
-        open_app: 'Open Fundiva',
-        store: "Don't have the app? Get it on the App Store",
-        hint: "Didn't open? Make sure Fundiva is installed, open it and sign in.",
-        err_title: 'This link has expired or is invalid',
-        err_sub: 'The verification link expired or was already used. Open Fundiva and request a new email.',
-        e_short: 'Password must be at least ' + MIN_PW + ' characters',
-        e_match: 'Passwords do not match', e_busy: 'Updating…', e_fail: 'Update failed. Request a new reset link.',
-        lang: '🇮🇱 עברית'
-      }
+    // Bilingual validation/progress strings (both languages in one line, like the UI)
+    var MSG = {
+      short: 'Password must be at least ' + MIN_PW + ' characters · הסיסמה חייבת לפחות ' + MIN_PW + ' תווים',
+      match: 'Passwords do not match · הסיסמאות אינן תואמות',
+      busy: 'Updating… · מעדכן…',
+      fail: 'Update failed — request a new reset link · העדכון נכשל, בקשו קישור איפוס חדש'
     };
 
     // ── Parse the callback URL ──
@@ -175,10 +163,10 @@
     var type = rawType || 'signup';
     var code = qp.get('code');
     var errorDesc = hash.get('error_description') || qp.get('error_description') || hash.get('error') || qp.get('error');
-    // Which app opens is carried in the PATH: dev links land on /auth/confirm/dev/,
-    // prod on /auth/confirm/. (GoTrue's mailer drops ?scheme= query params from
-    // redirect_to, so the path is the reliable dev/prod carrier; ?scheme= is still
-    // honored as an override when present.)
+    // dev/prod is carried in the PATH: this same file is hosted at /auth/confirm/
+    // (prod) AND /auth/confirm/dev/ (dev). GoTrue treats query-bearing redirect
+    // URLs as second-class (?scheme= was unreliable), so the path is the carrier;
+    // ?scheme= is still honored as an explicit override when present.
     var pathDefault = /\/dev\/?$/.test(location.pathname) ? 'fundiva-dev' : 'fundiva';
     var scheme = (qp.get('scheme') || pathDefault).replace(/[^a-z0-9-]/gi, '') || pathDefault;
 
@@ -213,29 +201,6 @@
     else initialState = 'state-err';
     show(initialState);
 
-    // ── i18n: default Hebrew, manual toggle, choice remembered ──
-    function apply(lang) {
-      var d = STR[lang];
-      document.documentElement.lang = lang;
-      document.documentElement.dir = (lang === 'he') ? 'rtl' : 'ltr';
-      document.querySelectorAll('[data-i18n]').forEach(function (el) {
-        var k = el.getAttribute('data-i18n'); if (d[k]) el.textContent = d[k];
-      });
-      document.querySelectorAll('[data-ph]').forEach(function (el) {
-        var k = el.getAttribute('data-ph'); if (d[k]) el.setAttribute('placeholder', d[k]);
-      });
-      document.getElementById('langBtn').textContent = d.lang;
-      try { localStorage.setItem('fundiva-auth-lang', lang); } catch (e) {}
-    }
-    // ENGLISH by default (broadest audience) — NO browser-language sniffing (in-app
-    // browsers misreport locales). The 🇮🇱 toggle persists an explicit choice.
-    var saved = null; try { saved = localStorage.getItem('fundiva-auth-lang'); } catch (e) {}
-    var initial = (saved === 'he' || saved === 'en') ? saved : 'en';
-    apply(initial);
-    document.getElementById('langBtn').addEventListener('click', function () {
-      apply(document.documentElement.lang === 'he' ? 'en' : 'he');
-    });
-
     // ── Auto-relay into the app (signup / email-change / magic link) ──
     // The email is ALREADY verified at GoTrue's /verify step (before this redirect),
     // so even on desktop — where scheme:// can't resolve — the account IS confirmed.
@@ -248,15 +213,14 @@
       var form = document.getElementById('pwForm');
       var submit = document.getElementById('pwSubmit');
       var errEl = document.getElementById('pwErr');
-      function L() { return STR[document.documentElement.lang] || STR.he; }
       function setErr(m) { errEl.textContent = m || ''; }
       form.addEventListener('submit', function (ev) {
         ev.preventDefault();
         var pw = document.getElementById('pw').value, pw2 = document.getElementById('pw2').value;
         setErr('');
-        if (pw.length < MIN_PW) return setErr(L().e_short);
-        if (pw !== pw2) return setErr(L().e_match);
-        submit.disabled = true; var label = submit.textContent; submit.textContent = L().e_busy;
+        if (pw.length < MIN_PW) return setErr(MSG.short);
+        if (pw !== pw2) return setErr(MSG.match);
+        submit.disabled = true; var label = submit.innerHTML; submit.textContent = MSG.busy;
         fetch(AUTH_BASE + '/user', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json', apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + accessToken },
@@ -267,8 +231,8 @@
           });
           show('state-recovery-done');
         }).catch(function (e) {
-          submit.disabled = false; submit.textContent = label;
-          setErr((e && e.message) ? e.message : L().e_fail);
+          submit.disabled = false; submit.innerHTML = label;
+          setErr((e && e.message) ? e.message : MSG.fail);
         });
       });
     }
