@@ -223,8 +223,10 @@
       document.getElementById('langBtn').textContent = d.lang;
       try { localStorage.setItem('fundiva-auth-lang', lang); } catch (e) {}
     }
+    // Hebrew (RTL) by default — NOT browser-language sniffing (in-app browsers often
+    // report en and Hebrew users then see English-only). The toggle persists a choice.
     var saved = null; try { saved = localStorage.getItem('fundiva-auth-lang'); } catch (e) {}
-    var initial = saved || ((navigator.language || 'he').toLowerCase().indexOf('he') === 0 ? 'he' : 'en');
+    var initial = (saved === 'he' || saved === 'en') ? saved : 'he';
     apply(initial);
     document.getElementById('langBtn').addEventListener('click', function () {
       apply(document.documentElement.lang === 'he' ? 'en' : 'he');
