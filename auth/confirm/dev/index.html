@@ -5,7 +5,7 @@
   https://fundiva.erezults.com/auth/confirm/ — this exact URL (trailing slash)
   is AUTH_CONFIRM_URL in the app's .env and in Supabase's uri_allow_list.
 
-  Bilingual (he/en) with a manual toggle — defaults to Hebrew, remembers the
+  Bilingual (he/en) with a manual flag toggle — defaults to ENGLISH, remembers the
   user's choice. SUPABASE URL + ANON KEY are PUBLIC (already in the app bundle).
 
   Flow:
@@ -16,11 +16,11 @@
       "Open Fundiva" deep-links via the scheme.
     • error / expired → explain + deep-link into the app to request a new email.
 -->
-<html lang="he" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fundiva — אימות אימייל / Email verification</title>
+  <title>Fundiva — Email verification / אימות אימייל</title>
   <meta name="robots" content="noindex" />
   <meta name="theme-color" content="#0c0e1a" />
   <link rel="icon" href="/icon.png" />
@@ -73,54 +73,54 @@
   </style>
 </head>
 <body>
-  <div class="lang-switch"><button id="langBtn" type="button">🇺🇸 English</button></div>
+  <div class="lang-switch"><button id="langBtn" type="button">🇮🇱 עברית</button></div>
   <main class="auth-card">
     <img class="mark" src="/icon.png" alt="Fundiva" />
 
     <!-- ✅ Email verified (signup / email-change / magic link) — relaying into the app -->
     <div id="state-ok" style="display:none">
       <div class="badge-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></div>
-      <h1 data-i18n="ok_title">האימייל שלך אומת! 🎉</h1>
-      <p data-i18n="ok_sub">פותחים את Fundiva… אם האפליקציה לא נפתחה, לחצו על הכפתור.</p>
+      <h1 data-i18n="ok_title">Your email is verified! 🎉</h1>
+      <p data-i18n="ok_sub">Opening Fundiva… if the app didn't open, tap the button.</p>
       <div class="auth-actions">
-        <a class="btn openApp" href="fundiva://" data-i18n="open_app">פתחו את Fundiva</a>
-        <a class="store-link" href="https://apps.apple.com/app/id6786450072" target="_blank" rel="noopener" data-i18n="store">אין לכם את האפליקציה? הורידו מה-App Store</a>
-        <p class="hint" data-i18n="hint">לא נפתח? ודאו ש-Fundiva מותקנת, פתחו אותה והתחברו.</p>
+        <a class="btn openApp" href="fundiva://" data-i18n="open_app">Open Fundiva</a>
+        <a class="store-link" href="https://apps.apple.com/app/id6786450072" target="_blank" rel="noopener" data-i18n="store">Don't have the app? Get it on the App Store</a>
+        <p class="hint" data-i18n="hint">Didn't open? Make sure Fundiva is installed, open it and sign in.</p>
       </div>
     </div>
 
     <!-- 🔑 Recovery: choose a new password right here (works even without the app) -->
     <div id="state-recovery" style="display:none">
       <div class="badge-ic key"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 2l-2 2m-7.6 7.6a5 5 0 1 0-1.4 1.4l2.4 2.4-1.5 1.5 2 2 1.5-1.5 2.1 2.1 2-2-2.1-2.1 2.5-2.5-2-2-2.5 2.5z"/><circle cx="7.5" cy="15.5" r="1.5" fill="currentColor" stroke="none"/></svg></div>
-      <h1 data-i18n="rc_title">בחרו סיסמה חדשה</h1>
-      <p data-i18n="rc_sub">הזינו סיסמה חדשה לחשבון Fundiva שלכם.</p>
+      <h1 data-i18n="rc_title">Set a new password</h1>
+      <p data-i18n="rc_sub">Enter a new password for your Fundiva account.</p>
       <form class="pw-form" id="pwForm" autocomplete="on">
-        <input id="pw" type="password" autocomplete="new-password" data-ph="pw_ph" placeholder="סיסמה חדשה" />
-        <input id="pw2" type="password" autocomplete="new-password" data-ph="pw2_ph" placeholder="אימות סיסמה" />
+        <input id="pw" type="password" autocomplete="new-password" data-ph="pw_ph" placeholder="New password" />
+        <input id="pw2" type="password" autocomplete="new-password" data-ph="pw2_ph" placeholder="Confirm password" />
         <p class="pw-err" id="pwErr"></p>
-        <button class="btn" id="pwSubmit" type="submit" data-i18n="rc_submit">עדכון סיסמה</button>
+        <button class="btn" id="pwSubmit" type="submit" data-i18n="rc_submit">Update password</button>
       </form>
     </div>
 
     <!-- ✅ Password updated -->
     <div id="state-recovery-done" style="display:none">
       <div class="badge-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg></div>
-      <h1 data-i18n="rd_title">הסיסמה עודכנה! 🎉</h1>
-      <p data-i18n="rd_sub">פתחו את Fundiva והתחברו עם הסיסמה החדשה.</p>
+      <h1 data-i18n="rd_title">Password updated! 🎉</h1>
+      <p data-i18n="rd_sub">Open Fundiva and sign in with your new password.</p>
       <div class="auth-actions">
-        <a class="btn openApp" href="fundiva://" data-i18n="open_app">פתחו את Fundiva</a>
-        <a class="store-link" href="https://apps.apple.com/app/id6786450072" target="_blank" rel="noopener" data-i18n="store">אין לכם את האפליקציה? הורידו מה-App Store</a>
+        <a class="btn openApp" href="fundiva://" data-i18n="open_app">Open Fundiva</a>
+        <a class="store-link" href="https://apps.apple.com/app/id6786450072" target="_blank" rel="noopener" data-i18n="store">Don't have the app? Get it on the App Store</a>
       </div>
     </div>
 
     <!-- ⚠️ Link expired / invalid -->
     <div id="state-err" style="display:none">
       <div class="badge-ic err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
-      <h1 data-i18n="err_title">הקישור פג או אינו תקין</h1>
-      <p data-i18n="err_sub">קישור האימות פג תוקף או כבר נוצל. פתחו את Fundiva ובקשו אימייל חדש.</p>
+      <h1 data-i18n="err_title">This link has expired or is invalid</h1>
+      <p data-i18n="err_sub">The verification link expired or was already used. Open Fundiva and request a new email.</p>
       <div class="auth-actions">
-        <a class="btn openApp" href="fundiva://" data-i18n="open_app">פתחו את Fundiva</a>
-        <a class="store-link" href="https://apps.apple.com/app/id6786450072" target="_blank" rel="noopener" data-i18n="store">אין לכם את האפליקציה? הורידו מה-App Store</a>
+        <a class="btn openApp" href="fundiva://" data-i18n="open_app">Open Fundiva</a>
+        <a class="store-link" href="https://apps.apple.com/app/id6786450072" target="_blank" rel="noopener" data-i18n="store">Don't have the app? Get it on the App Store</a>
       </div>
     </div>
   </main>
@@ -227,10 +227,10 @@
       document.getElementById('langBtn').textContent = d.lang;
       try { localStorage.setItem('fundiva-auth-lang', lang); } catch (e) {}
     }
-    // Hebrew (RTL) by default — NOT browser-language sniffing (in-app browsers often
-    // report en and Hebrew users then see English-only). The toggle persists a choice.
+    // ENGLISH by default (broadest audience) — NO browser-language sniffing (in-app
+    // browsers misreport locales). The 🇮🇱 toggle persists an explicit choice.
     var saved = null; try { saved = localStorage.getItem('fundiva-auth-lang'); } catch (e) {}
-    var initial = (saved === 'he' || saved === 'en') ? saved : 'he';
+    var initial = (saved === 'he' || saved === 'en') ? saved : 'en';
     apply(initial);
     document.getElementById('langBtn').addEventListener('click', function () {
       apply(document.documentElement.lang === 'he' ? 'en' : 'he');
